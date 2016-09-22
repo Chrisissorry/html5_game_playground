@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flipbook Animation</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <script>
+    var body = null;
+    var canvas = null;
+    var ctx = null;
+    var assets = ['https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk00.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk01.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk02.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk03.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk04.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk05.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk06.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk07.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk08.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk09.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk10.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk11.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk12.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk13.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk14.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk15.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk16.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk17.png',
+                  'https://www.udacity.com/media/js/standalone/libs/gamedev_assets/robowalk/robowalk18.png'
+                 ];
+    var frames = [];
+    var frameRate = 1000/30, currentFrame, totalFrameCount;
+    var frameCount = 0;
+
+    var onImageLoad = function(){
+
+    };
+
+    var setup = function() {
+        body = document.getElementsByTagName('body')[0];
+        canvas = document.createElement('canvas');
+
+        ctx = canvas.getContext('2d');
+
+        canvas.width = 100;
+        canvas.height = 100;
+
+        body.appendChild(canvas);
+
+        // Load each image URL from the assets array into the frames array
+        // in the correct order.
+        // Afterwards, call setInterval to run at a framerate of 30 frames
+        // per second, calling the animate function each time.
+
+        totalFrameCount = assets.length;
+
+        for (var i=0; i < totalFrameCount; i++) {
+          currentFrame = new Image();
+          currentFrame.onload = onImageLoad;
+          currentFrame.src = assets[i];
+          frames.push(currentFrame);
+        }
+
+        setInterval(animate, frameRate)
+
+    };
+
+    var animate = function(){
+        // Draw each frame in order, looping back around to the
+        // beginning of the animation once you reach the end.
+        // Draw each frame at a position of (0,0) on the canvas.
+
+        console.log("Frame " + frameCount + "/" + totalFrameCount);
+        console.log(frames[frameCount]);
+
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+
+        ctx.drawImage(frames[frameCount],0,0);
+
+        if (frameCount >= totalFrameCount-1) {
+          frameCount = 0;
+        } else {
+          frameCount++;
+        }
+    };
+
+    setup();
+  </script>
+</body>
+</html>
