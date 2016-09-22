@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Breakout</title>
+<script src="library.js"></script>
+<style>
+  #gamescreen {
+    border: 1px solid black;
+  }
+</style>
+</head>
+
+<body>
+<canvas id="gamescreen" width="300" height="300"></canvas>
+<script>
+
+  var paddlex, paddleh, paddlew;
+
+  function init_paddle()  {
+    paddlex = WIDTH/2;
+    paddleh = 10;
+    paddlew = 75;
+  }
+
+  function draw() {
+    clear();
+    circle(x,y,10);
+    rect(paddlex, HEIGHT-paddleh, paddlew, paddleh);
+
+    if (x + dx > WIDTH || x + dx < 0) {
+      dx = -dx;
+    }
+
+    if (y + dy < 0) {
+      dy = -dy;
+    } else if (y + dy > HEIGHT) 
+      if (x > paddlex && x < paddlex + paddlew) {
+      dy = -dy;
+    } else {
+      clearInterval(intervalId);
+    }
+
+    x += dx;
+    y += dy;
+  }
+
+  init();
+  init_paddle();
+</script>
+</body>
+
+</html>
