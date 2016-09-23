@@ -14,30 +14,52 @@
 <canvas id="gamescreen" width="300" height="300"></canvas>
 <script>
 
-  var paddlex, paddleh, paddlew;
-
-  function init_paddle()  {
-    paddlex = WIDTH/2;
-    paddleh = 10;
-    paddlew = 75;
-  }
+var ballr = 10;
+var rowcolors = ["red","green","blue","yellow","purple"];
+var paddlecolor = "#FFFFFF";
+var ballcolor = "#ffffff";
+var backcolor = "#000000";
 
   function draw() {
+    ctx.fillStyle = backcolor;
     clear();
-    circle(x,y,10);
+    ctx.fillStyle = ballcolor;
+    circle(x,y,ballr, ballcolor);
+
+    if(rightDown) {
+      paddlex += 5;
+    } else if(leftDown) {
+      paddlex -= 5;
+    }
+    ctx.fillStyle = paddlecolor;
     rect(paddlex, HEIGHT-paddleh, paddlew, paddleh);
 
-    if (x + dx > WIDTH || x + dx < 0) {
+    drawbricks();
+
+    var rowheight = BRICKHEIGHT + PADDING;
+    var colwidth = BRICKWIDTH + PADDING;
+    var row = Math.floor(y/rowheight);
+    var col = Math.floor(x/colwidth);
+
+    if(y < NROWS * rowheight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
+      dy = -dy;
+      bricks[row][col] = 0;
+    }
+
+    if (x + dx + ballr > WIDTH || x + dx - ballr < 0) {
       dx = -dx;
     }
 
-    if (y + dy < 0) {
+    if (y + dy - ballr < 0) {
       dy = -dy;
-    } else if (y + dy > HEIGHT) 
+    } else if (y + dy + ballr > HEIGHT) {
       if (x > paddlex && x < paddlex + paddlew) {
-      dy = -dy;
-    } else {
-      clearInterval(intervalId);
+        //move the ball differently based on where it hit the paddle
+        dx = 8 * ((x-(paddlex+paddlew/2))/paddlew);
+        dy = -dy;
+      } else if (y + dy + ballr > HEIGHT) {
+          clearInterval(intervalId);
+        }
     }
 
     x += dx;
@@ -45,7 +67,7 @@
   }
 
   init();
-  init_paddle();
+  initbricks();
 </script>
 </body>
 
